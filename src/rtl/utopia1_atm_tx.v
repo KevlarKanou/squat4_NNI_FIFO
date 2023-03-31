@@ -11,6 +11,8 @@ module utopia1_atm_tx(
         input   wire                txreq             ,
         output  wire                txack             ,
 
+        output  wire                fifo_full         ,
+
         input   wire    [3:0]       uni_GFC           ,
         input   wire    [7:0]       uni_VPI           ,
         input   wire    [15:0]      uni_VCI           ,
@@ -19,6 +21,44 @@ module utopia1_atm_tx(
         input   wire    [7:0]       uni_HEC           ,
         input   wire    [8*48-1:0]  uni_Payload
 
+    );
+
+    wire [53*8-1:0]	data_in, data_out;
+    wire 	        fifo_empty;
+ 
+    reg             txreq_reg;
+    wire            wr_en, rd_en;
+
+    wire    [3:0]       fifo_uni_GFC;
+    wire    [7:0]       fifo_uni_VPI;
+    wire    [15:0]      fifo_uni_VCI;
+    wire                fifo_uni_CLP;
+    wire    [2:0]       fifo_uni_PT;
+    wire    [7:0]       fifo_uni_HEC;
+    wire    [8*48-1:0]  fifo_uni_Payload;
+
+    assign data_in = {uni_GFC, uni_VPI, uni_VCI, uni_CLP, uni_PT, uni_HEC, uni_Payload};
+    assign {fifo_uni_GFC, fifo_uni_VPI, fifo_uni_VCI, fifo_uni_CLP, fifo_uni_PT, fifo_uni_HEC, fifo_uni_Payload} = data_out;
+
+    always @(posedge clk, negedge rst_n) begin
+        if (~rst_n)
+            txreq_reg   <= 1'b0;
+        else
+            txreq_reg   <= txreq;
+    end
+
+    assign wr_en = txreq & (~txreq_reg);
+
+    fifo_tx u_fifo_tx(
+        //ports
+        .clk        		( clk        		),
+        .rst_n      		( rst_n      		),
+        .wr_en      		( wr_en      		),
+        .rd_en      		( rd_en      		),
+        .data_in    		( data_in    		),
+        .data_out   		( data_out   		),
+        .fifo_empty 		( fifo_empty 		),
+        .fifo_full  		( fifo_full  		)
     );
 
     ///////////////////////////////////////////////////
@@ -80,6 +120,8 @@ module utopia1_atm_tx(
         end
 
     wire     s_state_ready = (UtopiaStatus == ready)  ;
+
+    assign rd_en = s_state_ready;
 
     assign   txack = (UtopiaStatus == ack)      ;
 
