@@ -85,7 +85,8 @@ module utopia1_atm_tx(
         else begin
             unique case (UtopiaStatus)
                 reset     :
-                    if(txreq )
+                    // if(txreq )
+                    if (~fifo_empty)
                         UtopiaStatus <= ready        ;
                 ready     :
                     if(clav)
@@ -119,11 +120,13 @@ module utopia1_atm_tx(
             endcase
         end
 
-    wire     s_state_ready = (UtopiaStatus == ready)  ;
+    wire    s_state_ready   = (UtopiaStatus == ready)  ;
+    wire    s_state_soc_frm = (UtopiaStatus == soc_frm);  
 
     assign rd_en = s_state_ready;
 
-    assign   txack = (UtopiaStatus == ack)      ;
+    // assign   txack = (UtopiaStatus == ack)      ;
+    assign   txack = wr_en      ;
 
     always @(posedge clk or negedge rst_n)
         if (~rst_n)
@@ -143,8 +146,8 @@ module utopia1_atm_tx(
     always @(posedge clk or negedge rst_n)
         if (~rst_n)
             uni_Payload_reg <= 'h0;
-        else if(s_state_ready)
-            uni_Payload_reg <= uni_Payload;
+        else if(s_state_soc_frm)
+            uni_Payload_reg <= fifo_uni_Payload;
 
 
     always @(posedge clk or negedge rst_n)
@@ -154,22 +157,22 @@ module utopia1_atm_tx(
             unique case (UtopiaStatus)
                 soc_frm        :
                     if (clav)
-                        data <= {uni_GFC, uni_VPI[7:4]};
+                        data <= {fifo_uni_GFC, fifo_uni_VPI[7:4]};
                 vpi_vci    :
                     if (clav)
-                        data <= {uni_VPI[3:0],
-                                 uni_VCI[15:12]
+                        data <= {fifo_uni_VPI[3:0],
+                                 fifo_uni_VCI[15:12]
                                 };
                 vci        :
                     if (clav)
-                        data <= uni_VCI[11:4];
+                        data <= fifo_uni_VCI[11:4];
                 vci_clp_pt :
                     if (clav)
-                        data <= {uni_VCI[3:0],
-                                 uni_CLP, uni_PT};
+                        data <= {fifo_uni_VCI[3:0],
+                                 fifo_uni_CLP, fifo_uni_PT};
                 hec        :
                     if (clav)
-                        data <= uni_HEC;
+                        data <= fifo_uni_HEC;
                 payload    :
                     if (clav) begin
                         data <= uni_Payload_reg[7:0];

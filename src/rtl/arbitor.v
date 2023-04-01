@@ -46,6 +46,7 @@ module arbitor (
 
         output	reg                 tx0_txreq       ,
         input	wire                tx0_txack       ,
+        input   wire                tx0_fifo_full   ,
         output  wire    [3:0]       tx0_uni_GFC     ,
         output	wire    [7:0]	    tx0_uni_VPI     ,
         output	wire    [15:0]	    tx0_uni_VCI     ,
@@ -56,6 +57,7 @@ module arbitor (
 
         output	reg                 tx1_txreq       ,
         input	wire    		    tx1_txack       ,
+        input   wire                tx1_fifo_full   ,
         output  wire    [3:0]       tx1_uni_GFC     ,
         output	wire    [7:0]	    tx1_uni_VPI     ,
         output	wire    [15:0]	    tx1_uni_VCI     ,
@@ -66,6 +68,7 @@ module arbitor (
 
         output	reg                 tx2_txreq       ,
         input	wire    		    tx2_txack       ,
+        input   wire                tx2_fifo_full   ,
         output  wire    [3:0]       tx2_uni_GFC     ,
         output	wire    [7:0]	    tx2_uni_VPI     ,
         output	wire    [15:0]	    tx2_uni_VCI     ,
@@ -76,6 +79,7 @@ module arbitor (
 
         output	reg                 tx3_txreq       ,
         input	wire    		    tx3_txack       ,
+        input   wire                tx3_fifo_full   ,
         output  wire    [3:0]       tx3_uni_GFC     ,
         output	wire    [7:0]	    tx3_uni_VPI     ,
         output	wire    [15:0]	    tx3_uni_VCI     ,
@@ -319,7 +323,7 @@ module arbitor (
             tx0_txreq <= 1'b0 ;
         else if(tx0_txack)
             tx0_txreq <= 1'b0 ;
-        else if(tx0_fwd_req)
+        else if(tx0_fwd_req & (~tx0_fifo_full))
             tx0_txreq <= 1'b1 ;
 
 
@@ -328,7 +332,7 @@ module arbitor (
             tx1_txreq <= 1'b0 ;
         else if(tx1_txack)
             tx1_txreq <= 1'b0 ;
-        else if(tx1_fwd_req)
+        else if(tx1_fwd_req & (~tx1_fifo_full))
             tx1_txreq <= 1'b1 ;
 
     always@(posedge clk or negedge rst_n)
@@ -336,7 +340,7 @@ module arbitor (
             tx2_txreq <= 1'b0 ;
         else if(tx2_txack)
             tx2_txreq <= 1'b0 ;
-        else if(tx2_fwd_req)
+        else if(tx2_fwd_req & (~tx2_fifo_full))
             tx2_txreq <= 1'b1 ;
 
     always@(posedge clk or negedge rst_n)
@@ -344,7 +348,7 @@ module arbitor (
             tx3_txreq <= 1'b0 ;
         else if(tx3_txack)
             tx3_txreq <= 1'b0 ;
-        else if(tx3_fwd_req)
+        else if(tx3_fwd_req & (~tx3_fifo_full))
             tx3_txreq <= 1'b1 ;
 
     ////////////////////////////////////////////////////////

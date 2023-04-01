@@ -173,6 +173,7 @@ module squat4_NNI (
 
     wire                tx0_txreq       ;
     wire                tx0_txack       ;
+    wire                tx0_fifo_full   ;
 
     wire    [3:0]       tx0_uni_GFC     ;   
     wire    [7:0]       tx0_uni_VPI     ;
@@ -192,6 +193,7 @@ module squat4_NNI (
         .clav        		( tx0_clav        	),
         .txreq       		( tx0_txreq       	),
         .txack       		( tx0_txack       	),
+        .fifo_full          ( tx0_fifo_full     ),
         .uni_GFC     		( tx0_uni_GFC     	),
         .uni_VPI     		( tx0_uni_VPI     	),
         .uni_VCI     		( tx0_uni_VCI     	),
@@ -203,6 +205,7 @@ module squat4_NNI (
 
     wire                tx1_txreq       ;
     wire                tx1_txack       ;
+    wire                tx1_fifo_full   ;
 
     wire    [3:0]       tx1_uni_GFC     ;   
     wire    [7:0]       tx1_uni_VPI     ;
@@ -222,6 +225,7 @@ module squat4_NNI (
         .clav        		( tx1_clav        	),
         .txreq       		( tx1_txreq       	),
         .txack       		( tx1_txack       	),
+        .fifo_full          ( tx1_fifo_full     ),
         .uni_GFC     		( tx1_uni_GFC     	),
         .uni_VPI     		( tx1_uni_VPI     	),
         .uni_VCI     		( tx1_uni_VCI     	),
@@ -233,6 +237,7 @@ module squat4_NNI (
 
     wire                tx2_txreq       ;
     wire                tx2_txack       ;
+    wire                tx2_fifo_full   ;
 
     wire    [3:0]       tx2_uni_GFC     ;   
     wire    [7:0]       tx2_uni_VPI     ;
@@ -252,6 +257,7 @@ module squat4_NNI (
         .clav        		( tx2_clav        	),
         .txreq       		( tx2_txreq       	),
         .txack       		( tx2_txack       	),
+        .fifo_full          ( tx2_fifo_full     ),
         .uni_GFC     		( tx2_uni_GFC     	),
         .uni_VPI     		( tx2_uni_VPI     	),
         .uni_VCI     		( tx2_uni_VCI     	),
@@ -263,6 +269,7 @@ module squat4_NNI (
 
     wire                tx3_txreq       ;
     wire                tx3_txack       ;
+    wire                tx3_fifo_full   ;
 
     wire    [3:0]       tx3_uni_GFC     ;   
     wire    [7:0]       tx3_uni_VPI     ;
@@ -282,6 +289,7 @@ module squat4_NNI (
         .clav        		( tx3_clav        	),
         .txreq       		( tx3_txreq       	),
         .txack       		( tx3_txack       	),
+        .fifo_full          ( tx3_fifo_full     ),
         .uni_GFC     		( tx3_uni_GFC     	),
         .uni_VPI     		( tx3_uni_VPI     	),
         .uni_VCI     		( tx3_uni_VCI     	),
@@ -365,6 +373,7 @@ module squat4_NNI (
 
         .tx0_txreq       		( tx0_txreq       		),
         .tx0_txack       		( tx0_txack       		),
+        .tx0_fifo_full          ( tx0_fifo_full         ),
         .tx0_uni_GFC     		( tx0_uni_GFC     		),
         .tx0_uni_VPI     		( tx0_uni_VPI     		),
         .tx0_uni_VCI     		( tx0_uni_VCI     		),
@@ -375,6 +384,7 @@ module squat4_NNI (
 
         .tx1_txreq       		( tx1_txreq       		),
         .tx1_txack       		( tx1_txack       		),
+        .tx1_fifo_full          ( tx1_fifo_full         ),
         .tx1_uni_GFC     		( tx1_uni_GFC     		),
         .tx1_uni_VPI     		( tx1_uni_VPI     		),
         .tx1_uni_VCI     		( tx1_uni_VCI     		),
@@ -385,6 +395,7 @@ module squat4_NNI (
 
         .tx2_txreq       		( tx2_txreq       		),
         .tx2_txack       		( tx2_txack       		),
+        .tx2_fifo_full          ( tx2_fifo_full         ),
         .tx2_uni_GFC     		( tx2_uni_GFC     		),
         .tx2_uni_VPI     		( tx2_uni_VPI     		),
         .tx2_uni_VCI     		( tx2_uni_VCI     		),
@@ -395,6 +406,7 @@ module squat4_NNI (
 
         .tx3_txreq       		( tx3_txreq       		),
         .tx3_txack       		( tx3_txack       		),
+        .tx3_fifo_full          ( tx3_fifo_full         ),
         .tx3_uni_GFC     		( tx3_uni_GFC     		),
         .tx3_uni_VPI     		( tx3_uni_VPI     		),
         .tx3_uni_VCI     		( tx3_uni_VCI     		),
