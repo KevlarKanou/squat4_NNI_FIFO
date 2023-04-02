@@ -26,7 +26,7 @@ module utopia1_atm_tx(
     wire [53*8-1:0]	data_in, data_out;
     wire 	        fifo_empty;
  
-    reg             txreq_reg;
+    // reg             txreq_reg;
     wire            wr_en, rd_en;
 
     wire    [3:0]       fifo_uni_GFC;
@@ -40,14 +40,15 @@ module utopia1_atm_tx(
     assign data_in = {uni_GFC, uni_VPI, uni_VCI, uni_CLP, uni_PT, uni_HEC, uni_Payload};
     assign {fifo_uni_GFC, fifo_uni_VPI, fifo_uni_VCI, fifo_uni_CLP, fifo_uni_PT, fifo_uni_HEC, fifo_uni_Payload} = data_out;
 
-    always @(posedge clk, negedge rst_n) begin
-        if (~rst_n)
-            txreq_reg   <= 1'b0;
-        else
-            txreq_reg   <= txreq;
-    end
+    // always @(posedge clk, negedge rst_n) begin
+    //     if (~rst_n)
+    //         txreq_reg   <= 1'b0;
+    //     else
+    //         txreq_reg   <= txreq;
+    // end
 
-    assign wr_en = txreq & (~txreq_reg);
+    // assign wr_en = txreq & (~txreq_reg);
+    assign wr_en = txreq;
 
     fifo_tx u_fifo_tx(
         //ports
